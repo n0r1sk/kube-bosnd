@@ -333,9 +333,9 @@ func getkubernetespods(config *Config) error {
 	var pods *v1.PodList
 	var err error
 	if config.Kubernetes.Labelselector != "" {
-		pods, err = kubeclient.CoreV1().Pods(config.Kubernetes.Namespace).List(metav1.ListOptions{LabelSelector: config.Kubernetes.Labelselector})
+		pods, err = kubeclient.CoreV1().Pods(config.Kubernetes.Namespace).List(metav1.ListOptions{LabelSelector: config.Kubernetes.Labelselector, FieldSelector: "status.phase==Running"})
 	} else {
-		pods, err = kubeclient.CoreV1().Pods(config.Kubernetes.Namespace).List(metav1.ListOptions{})
+		pods, err = kubeclient.CoreV1().Pods(config.Kubernetes.Namespace).List(metav1.ListOptions{FieldSelector: "status.phase==Running"})
 	}
 
 	if err != nil {
